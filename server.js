@@ -85,8 +85,11 @@ function init() {
                     });
                     break;
                 case 'Add an employee':
-                    console.log(choice);// what to do
-                    anotherTask();
+                    inquirer.prompt(questions.addEmployee)
+                    .then((data) => {
+                        console.log(data)
+                        anotherTask();
+                    });
                     break;
                 case 'Update an employee role':
                     console.log(choice);// what to do
