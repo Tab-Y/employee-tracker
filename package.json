@@ -8,6 +8,7 @@
     "mysql2": "^2.3.3"
   },
   "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js"
   },
   "name": "1-012_module-12-employee-tracker",
