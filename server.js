@@ -1,14 +1,14 @@
 const express = require('express');
-const mysql = require('mysql2');
 const asciiart = require('asciiart-logo');
 const chalk = import('chalk');
 const table = require('console.table');
 const inquirer = require('inquirer');
-const config = require('./config/config.js');
 const questions = require("./src/questions.js");
+const connections = require("./routes/connection.js")
 
 
 
+// sequelize dotenv
 // const PORT = process.env.PORT || 3001;
 const app = express();
 
@@ -16,28 +16,13 @@ const app = express();
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
-const db = mysql.createConnection(
-    {
-        host: 'localhost',
-        user: 'root',
-        // add your SQL password here
-        password: process.env.SECRETKEY || `${config}`,
-        database: 'employees_db'
-    },
-    console.log(`Connected to the employees database.`)
-);
-
-
-
-
-
 function anotherTask() {
     inquirer.prompt(questions.startOver)
     .then((data) => {
         if(data.confirm === true){
             init()
         } else {
-            db.end()
+            connections.db.end()
         }
     })
 };
