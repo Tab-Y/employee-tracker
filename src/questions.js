@@ -1,33 +1,31 @@
-// const verifyAsString = function (input) {
-//     if (input === "") {
-//         throw console.error(err)
-//     }
-// };
 const startQuestion = [
     {
         type: "list",
-        message: "What would you like to do?",
-        choices: ["view all departments", "view all roles", "view all employees", "add a department", "add a role", "add an employee", "update an employee role"],
+        message: "What task would you like to do?",
+        choices: ["View all departments", "View all roles", "View all employees", "View employees by manager", "View employees by department", "View budget by department", "Add a department", "Add a role", "Add an employee", "Update an employee role", "Update employee managers", "Delete department", "Delete role", "Delete employee"],
         name: "task"
     }
 ];
-// const addDepartment = [
-//     {
-//         type: "input",
-//         message: "What is the name of the department?",
-//         name: "department",
-//         validate: function () {
-//             if(input === null){
-//                 throw console.error("Please enter a department name.")
-//             }
-//         }
-//     }
-// ];
-// const addRole = [
-//     {
-//         type: "input",
-//         message: ""
-//     }
-// ]
+const addDepartment = [
+    {
+        type: "input",
+        message: "What is the name of the department?",
+        name: "department"
+    }
+];
+const addRole = [
+    {
+        type: "input",
+        message: "What role do you want to add?",
+        name: "role"
+    }
+];
+const startOver = [
+    {
+        type: "confirm",
+        message: "would you like to start another task?",
+        name: "confirm"
+    }
+];
 
-module.exports = {startQuestion}
+module.exports = { startQuestion, addDepartment, addRole, startOver }
