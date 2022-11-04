@@ -132,20 +132,19 @@ function questionSwitch(data) {
                     anotherTask()
                 })
             };
-            function askRoleQuestions(departmentList){
-                console.log(departmentList)
-                inquirer.prompt(questions.addRoleQuestions(departmentList))
+            function askRoleQuestions(roleList){
+                inquirer.prompt(questions.addEmployeeQuestions(roleList))
                 .then((data) => {
                     setEmployeeToDb(data);
                 })
             };
             function getRoleList(){
-                let departmentList = [];
+                let roleList = [];
                 connections.db.query("SELECT name FROM role", (err, res) => {
                     for(i=0;i<res.length;i++) {
-                        departmentList.push(res[i])
+                        roleList.push(res[i])
                     }
-                    askRoleQuestions(departmentList); 
+                    askRoleQuestions(roleList); 
                 });
             };
             getRoleList();

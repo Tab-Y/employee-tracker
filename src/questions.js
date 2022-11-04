@@ -46,7 +46,9 @@ function addRoleQuestions(departmentList) {
     }
 ]
 };
-const addEmployeeQuestions = [
+function addEmployeeQuestions(roleList) {
+
+return [
     {
         type: "input",
         message: "what is the id number of this employee?",
@@ -71,11 +73,18 @@ const addEmployeeQuestions = [
     },
     {
         type: "list",
+        message: "What department does this employee work in?",
+        choices: [roleList],
+        name: "department"
+    },
+    {
+        type: "list",
         message: "Who is the direct manager of this employee?",
         choices: ["tim", "tara", "becky"], //need to link this to the list of employees in the db
         name: "manager"
     }
-];
+]
+}
 const startOver = [
     {
         type: "confirm",
