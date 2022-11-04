@@ -12,7 +12,6 @@ function init() {
         .prompt(questions.startQuestion)
         .then((data) => {
             switches.questionSwitch(data)
-  
         })
 }
 init();
