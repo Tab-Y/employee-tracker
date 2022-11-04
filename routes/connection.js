@@ -1,4 +1,4 @@
-// base routes page
+// base routes page 
 const mysql = require('mysql2');
 require('dotenv').config();
 
@@ -13,4 +13,4 @@ const db = mysql.createConnection(
     console.log(`Connected to the employees database.`)
 );
 
-module.exports = {db}
+module.exports = { db }
