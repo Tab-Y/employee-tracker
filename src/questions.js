@@ -11,6 +11,7 @@ const startQuestion = [
         // , "Update employee managers", "Delete department", "Delete role", "Delete employee""View employees by manager", "View employees by department", "View budget by department"
     }
 ];
+
 const addDepartmentQuestions = [
     {
         type: "input",
@@ -18,7 +19,7 @@ const addDepartmentQuestions = [
         name: "department"
     }
 ];
-// need to add questions for all the specific info
+
 function addRoleQuestions(departmentList) {
     return [
     {
@@ -46,6 +47,7 @@ function addRoleQuestions(departmentList) {
     }
 ]
 };
+
 function addEmployeeQuestions(roleList, managerList) {
 
 return [
@@ -62,12 +64,6 @@ return [
         }
     },
     {
-        type: "list",
-        message: "What department does this employee work in?",
-        choices: roleList,
-        name: "department"
-    },
-    {
         type: "input",
         message: "What is the employee's first name?",
         name: "first_name"
@@ -79,12 +75,19 @@ return [
     },
     {
         type: "list",
+        message: "What department does this employee work in?",
+        choices: roleList,
+        name: "department"
+    },
+    {
+        type: "list",
         message: "Who is the direct manager of this employee?",
         choices: managerList,
         name: "manager"
     }
 ]
-}
+};
+
 const startOver = [
     {
         type: "confirm",

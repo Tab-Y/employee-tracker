@@ -128,12 +128,12 @@ function questionSwitch(data) {
             function setEmployeeToDb(data) {
                 connections.db.query(`INSERT INTO employee (id, first_name, last_name, role_id, manager_id)
                 VALUES (?, ?, ?, ?, ?)`, [data.id, data.first_name, data.last_name, data.role_id, data.manager_id], (err, res) => {
-                    console.log('\n New role added', data.title, '.');
+                    console.log('\n New employee added', data.first_name + data.last_name, '.');
                     anotherTask()
                 })
             };
-            function askRoleQuestions(roleList) {
-                inquirer.prompt(questions.addEmployeeQuestions(roleList))
+            function askRoleQuestions(roleList, managerList) {
+                inquirer.prompt(questions.addEmployeeQuestions(roleList, managerList))
                     .then((data) => {
                         setEmployeeToDb(data);
                     })
