@@ -11,7 +11,7 @@ const startQuestion = [
         // , "Update employee managers", "Delete department", "Delete role", "Delete employee""View employees by manager", "View employees by department", "View budget by department"
     }
 ];
-const addDepartment = [
+const addDepartmentQuestions = [
     {
         type: "input",
         message: "What is the name of the department?",
@@ -19,14 +19,34 @@ const addDepartment = [
     }
 ];
 // need to add questions for all the specific info
-const addRole = [
+function addRoleQuestions(departmentList) {
+    return [
     {
         type: "input",
         message: "What role do you want to add?",
-        name: "role"
+        name: "title"
+    },
+    {
+        type: "input",
+        message: "What is the salary of this role?",
+        name: "salary",
+        validate: (salary) => {
+            if(isNaN(salary)){
+                return "please enter a valid number"
+            } else {
+                return true
+            }
+        }
+    },
+    {
+        type: "list",
+        message: "What department does this role belong to?",
+        choices: [departmentList],
+        name: "department"
     }
-];
-const addEmployee = [
+]
+};
+const addEmployeeQuestions = [
     {
         type: "input",
         message: "what is the id number of this employee?",
@@ -64,4 +84,4 @@ const startOver = [
     }
 ];
 
-module.exports = { startQuestion, addDepartment, addRole, addEmployee, startOver }
+module.exports = { startQuestion, addDepartmentQuestions, addRoleQuestions, addEmployeeQuestions, startOver }
