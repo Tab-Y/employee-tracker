@@ -41,12 +41,12 @@ function addRoleQuestions(departmentList) {
     {
         type: "list",
         message: "What department does this role belong to?",
-        choices: [departmentList],
+        choices: departmentList,
         name: "department"
     }
 ]
 };
-function addEmployeeQuestions(roleList) {
+function addEmployeeQuestions(roleList, managerList) {
 
 return [
     {
@@ -62,6 +62,12 @@ return [
         }
     },
     {
+        type: "list",
+        message: "What department does this employee work in?",
+        choices: roleList,
+        name: "department"
+    },
+    {
         type: "input",
         message: "What is the employee's first name?",
         name: "first_name"
@@ -73,14 +79,8 @@ return [
     },
     {
         type: "list",
-        message: "What department does this employee work in?",
-        choices: [roleList],
-        name: "department"
-    },
-    {
-        type: "list",
         message: "Who is the direct manager of this employee?",
-        choices: ["tim", "tara", "becky"], //need to link this to the list of employees in the db
+        choices: managerList,
         name: "manager"
     }
 ]

@@ -3,7 +3,7 @@
 
 ## Description 
 
-will add later
+This is a application to create, read, update and delete a database of employees
  
 ## Table of Contents
  
@@ -11,18 +11,14 @@ will add later
 - [Usage](#usage)
 - [Credits](#credits)
 - [License](#license)
-- [Badges](#badges)
-- [Features](#features)
-- [Questions](#questions)
-- [Tests](#tests) 
 
 ##  Installation 
 
-Will add later 
+Install modules
 
 ## Usage 
 
-Will add later 
+n/a
 
 ![Descriptive text](assets/images/screenshot.png) 
 
@@ -35,20 +31,3 @@ n/a
 MIT License 
 Please refer to License in repository.  
  
-
-## Badges 
-
-Add badges to this section 
-
-## Features 
-
-Add features to this space 
-
-## Questions 
-
-If you have any questions or concerns, please reach out to Tab-Y at tlyoumans@gmail.com. 
-
-## Tests 
-
-n/a 
-
