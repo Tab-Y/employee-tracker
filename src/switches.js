@@ -154,12 +154,11 @@ function questionSwitch(data) {
             };
             function getRoleList() {
                 let roleList = [];
-
                 connections.db.query("SELECT id, title FROM role", (err, result) => {
                     for (i = 0; i < result.length; i++) {
                         roleList.push(result[i].title);
                     }
-                })
+                });
                 let managerList = [];
                 connections.db.query(`SELECT id, CONCAT(first_name, ' ', last_name) AS manager FROM employee WHERE manager_id is NULL`, (err, result2) => {
                     for (i = 0; i < result2.length; i++) {
@@ -171,8 +170,43 @@ function questionSwitch(data) {
             getRoleList();
             break;
         case 'Update an employee role':
-            console.log(choice);// what to do
-            anotherTask();
+            function setUpdateToDb(data, selectedRole) {
+                connections.db.query(`UPDATE employee SET role_id = ${selectedRole} WHERE CONCAT(first_name, ' ', last_name) = ?`, data.employee, (err, res) => {
+                    console.log('\n Employee updated', data.employee, 'to new role', data.role, '.\n');
+                    anotherTask()
+                });
+            }
+            function askWhichEmployee(employeeList, roleList) {
+                inquirer.prompt(questions.updateRoleQuestion(employeeList, roleList))
+                    .then((data) => {
+                        let selectedRole;
+                        connections.db.query(`SELECT id from role WHERE title = ?`, data.role, (err, roleRes) => {
+                            selectedRole = roleRes[0].id;
+                        });
+                        setTimeout(function () {        //needs to be fixed to wait for querys to end before starting for scaling purposes
+                            setUpdateToDb(data, selectedRole);
+                        }, 200);
+                    })
+            }
+            function getEmployees() {
+                let roleList = [];
+                connections.db.query("SELECT id, title FROM role", (err, result) => {
+                    for (i = 0; i < result.length; i++) {
+                        roleList.push(result[i].title);
+                    }
+                });
+                let employeeList = [];
+                connections.db.query(`SELECT CONCAT(first_name, ' ', last_name) AS employee FROM employee`, (err, resEmpl) => {
+                    for (i = 0; i < resEmpl.length; i++) {
+                        employeeList.push(resEmpl[i].employee)
+                    }
+                });
+                setTimeout(function () {        //needs to be fixed to wait for querys to end before starting for scaling purposes
+                    askWhichEmployee(employeeList, roleList)
+                }, 200);
+            };
+            getEmployees();
+
             break;
     }
 };
