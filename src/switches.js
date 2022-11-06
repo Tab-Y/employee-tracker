@@ -49,7 +49,6 @@ function questionSwitch(data) {
                 if (err) {
                     throw err;
                 } else {
-
                     console.log('\n');
                     console.table(res);
                     console.log('\n');
@@ -83,7 +82,6 @@ function questionSwitch(data) {
                 if (err) {
                     throw err;
                 } else {
-
                     console.log('\n');
                     console.table(res);
                     console.log('\n');
@@ -94,20 +92,22 @@ function questionSwitch(data) {
         case 'Add a department':
             inquirer.prompt(questions.addDepartmentQuestions)
                 .then((data) => {
-                    console.log(data)
-                    anotherTask();
+                    connections.db.query(`INSERT INTO department (name)
+                    VALUES (?)`, [data.department], (err, res) => {
+                        console.log('\n New role added', data.department, '.');
+                        anotherTask()
+                    })
                 });
             break;
         case 'Add a role':
             function setRoleToDb(data) {
-                connections.db.query(`INSERT INTO role(title, salary, department_id)
+                connections.db.query(`INSERT INTO role (title, salary, department_id)
                 VALUES (?, ?, ?)`, [data.title, data.salary, data.name], (err, res) => {
                     console.log('\n New role added', data.title, '.');
                     anotherTask()
                 })
             };
             function askDepartmentQuestions(departmentList) {
-                console.log(departmentList)
                 inquirer.prompt(questions.addRoleQuestions(departmentList))
                     .then((data) => {
                         setRoleToDb(data);
@@ -117,7 +117,7 @@ function questionSwitch(data) {
                 let departmentList = [];
                 connections.db.query("SELECT name FROM department", (err, res) => {
                     for (i = 0; i < res.length; i++) {
-                        departmentList.push(res[i])
+                        departmentList.push(res[i].name)
                     }
                     askDepartmentQuestions(departmentList);
                 });
@@ -125,30 +125,45 @@ function questionSwitch(data) {
             getDepartmentList();
             break;
         case 'Add an employee':
-            function setEmployeeToDb(data) {
-                connections.db.query(`INSERT INTO employee (id, first_name, last_name, role_id, manager_id)
-                VALUES (?, ?, ?, ?, ?)`, [data.id, data.first_name, data.last_name, data.role_id, data.manager_id], (err, res) => {
-                    console.log('\n New employee added', data.first_name + data.last_name, '.');
+
+            function setEmployeeToDb(data, selectedRole, selectedBoss) {
+                console.log(selectedBoss)
+                connections.db.query(`INSERT INTO employee (first_name, last_name, role_id, manager_id)
+                    VALUES (?, ?, ?, ?)`, [data.first_name, data.last_name, selectedRole, selectedBoss], (err, res) => {
+                    console.log('\n New employee added', data.first_name, data.last_name + '.\n');
                     anotherTask()
                 })
             };
             function askRoleQuestions(roleList, managerList) {
                 inquirer.prompt(questions.addEmployeeQuestions(roleList, managerList))
                     .then((data) => {
-                        setEmployeeToDb(data);
+                        let selectedRole;
+                        connections.db.query(`SELECT id from role WHERE title = ?`, data.department, (err, roleRes) => {
+                            selectedRole = roleRes[0].id;
+                        });
+                        let selectedBoss = "";
+                        connections.db.query(`SELECT id from employee WHERE CONCAT(first_name, ' ', last_name) = ?`, data.manager, (err, bossRes) => {
+                            selectedBoss = bossRes[0].id;
+                        });
+
+                        setTimeout(function () {        //needs to be fixed to wait for querys to end before starting for scaling purposes
+                            setEmployeeToDb(data, selectedRole, selectedBoss);
+                        }, 200);
                     })
+
             };
             function getRoleList() {
                 let roleList = [];
-                connections.db.query("SELECT title FROM role", (err, result) => {
+
+                connections.db.query("SELECT id, title FROM role", (err, result) => {
                     for (i = 0; i < result.length; i++) {
                         roleList.push(result[i].title);
                     }
                 })
                 let managerList = [];
-                connections.db.query(`SELECT CONCAT(first_name, ' ', last_name) AS manager FROM employee WHERE manager_id is NULL`, (err, result2) => {
+                connections.db.query(`SELECT id, CONCAT(first_name, ' ', last_name) AS manager FROM employee WHERE manager_id is NULL`, (err, result2) => {
                     for (i = 0; i < result2.length; i++) {
-                        managerList.push(result2[i].manager)
+                        managerList.push(result2[i].manager);
                     }
                 });
                 askRoleQuestions(roleList, managerList)

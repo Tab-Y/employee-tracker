@@ -1,5 +1,3 @@
-
-
 const startQuestion = [
     {
         type: "list",
@@ -51,18 +49,6 @@ function addRoleQuestions(departmentList) {
 function addEmployeeQuestions(roleList, managerList) {
 
 return [
-    {
-        type: "input",
-        message: "what is the id number of this employee?",
-        name: "employee_id",
-        validate: (employee_id) => {
-            if(isNaN(employee_id)){
-                return "please enter a valid number"
-            } else {
-                return true
-            }
-        }
-    },
     {
         type: "input",
         message: "What is the employee's first name?",
