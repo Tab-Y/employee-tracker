@@ -7,15 +7,15 @@ const questions = require("../src/questions.js");
 
 
 function anotherTask() {
+
     inquirer.prompt(questions.startOver)
         .then((data) => {
             if (data.confirm === true) {
                 inquirer
-                    .prompt(questions.startQuestion)
-                    .then((data) => {
-                        questionSwitch(data)
-
-                    })
+                .prompt(questions.startQuestion)
+                .then((data) => {
+                    questionSwitch(data)
+                })
             } else {
                 connections.db.end()
             }
@@ -33,9 +33,7 @@ function questionSwitch(data) {
                 if (err) {
                     throw err;
                 } else {
-                    console.log('\n');
-                    console.table(res);
-                    console.log('\n');
+                    console.table('\n',res,'\n');
                     anotherTask()
                 }
             });
@@ -49,9 +47,7 @@ function questionSwitch(data) {
                 if (err) {
                     throw err;
                 } else {
-                    console.log('\n');
-                    console.table(res);
-                    console.log('\n');
+                    console.table('\n',res,'\n');
                     anotherTask()
                 }
             });
@@ -82,9 +78,7 @@ function questionSwitch(data) {
                 if (err) {
                     throw err;
                 } else {
-                    console.log('\n');
-                    console.table(res);
-                    console.log('\n');
+                    console.table('\n',res,'\n');
                     anotherTask()
                 }
             });
@@ -94,23 +88,29 @@ function questionSwitch(data) {
                 .then((data) => {
                     connections.db.query(`INSERT INTO department (name)
                     VALUES (?)`, [data.department], (err, res) => {
-                        console.log('\n New role added', data.department, '.');
+                        console.log('\n New department added', data.department, '.\n');
                         anotherTask()
                     })
                 });
             break;
         case 'Add a role':
-            function setRoleToDb(data) {
+            function setRoleToDb(data, selectedRole) {
                 connections.db.query(`INSERT INTO role (title, salary, department_id)
-                VALUES (?, ?, ?)`, [data.title, data.salary, data.name], (err, res) => {
-                    console.log('\n New role added', data.title, '.');
+                VALUES (?, ?, ?)`, [data.title, data.salary, selectedRole], (err, res) => {
+                    console.log('\n New role added', data.title, '.\n');
                     anotherTask()
                 })
             };
             function askDepartmentQuestions(departmentList) {
                 inquirer.prompt(questions.addRoleQuestions(departmentList))
                     .then((data) => {
-                        setRoleToDb(data);
+                        let selectedRole;
+                        connections.db.query(`SELECT id FROM department WHERE name = ?`, data.department, (err, roleRes) => {
+                            selectedRole = roleRes[0].id;
+                        });
+                        setTimeout(function () {        //needs to be fixed to wait for querys to end before starting for scaling purposes
+                            setRoleToDb(data, selectedRole);
+                        }, 200);
                     })
             };
             function getDepartmentList() {
@@ -127,7 +127,6 @@ function questionSwitch(data) {
         case 'Add an employee':
 
             function setEmployeeToDb(data, selectedRole, selectedBoss) {
-                console.log(selectedBoss)
                 connections.db.query(`INSERT INTO employee (first_name, last_name, role_id, manager_id)
                     VALUES (?, ?, ?, ?)`, [data.first_name, data.last_name, selectedRole, selectedBoss], (err, res) => {
                     console.log('\n New employee added', data.first_name, data.last_name + '.\n');
@@ -141,7 +140,7 @@ function questionSwitch(data) {
                         connections.db.query(`SELECT id from role WHERE title = ?`, data.department, (err, roleRes) => {
                             selectedRole = roleRes[0].id;
                         });
-                        let selectedBoss = "";
+                        let selectedBoss;
                         connections.db.query(`SELECT id from employee WHERE CONCAT(first_name, ' ', last_name) = ?`, data.manager, (err, bossRes) => {
                             selectedBoss = bossRes[0].id;
                         });
