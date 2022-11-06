@@ -16,6 +16,11 @@ The lowest level of acceptability of view, add anf update has been included, and
 ##  Installation 
 
 Install modules
+Create a .env file
+inside the .env, make 3 variables :
+DB_LOCATION = "employees_db"
+DB_NAME = your login
+SECRET_KEY = your password
 
 ## Usage 
 
