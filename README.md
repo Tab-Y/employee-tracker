@@ -3,7 +3,8 @@
 
 ## Description 
 
-This is a application to create, read, update and delete a database of employees
+This is a application to create, read, update and delete a database of employees. There is still room for improvement, and additional functionality to be added.
+The lowest level of acceptability of view, add anf update has been included, and additional functionality will be added in the future.
  
 ## Table of Contents
  
@@ -18,9 +19,11 @@ Install modules
 
 ## Usage 
 
-n/a
+Visit https://app.castify.com/view/33889dfe-2200-41c7-b23f-1d4c4fe0e3ba to watch walkthrough video
 
-![Descriptive text](assets/images/screenshot.png) 
+![start CLI screenshot](./assets/img/start-screenshot.png)
+![Screen shot of different tables, and functions](./assets/img/functions-screenshot.png)
+![Screen shot of ending or starting a new function](./assets/img/repeat-screenshot.png)
 
 ## Credits 
 
